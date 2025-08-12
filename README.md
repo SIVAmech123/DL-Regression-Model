@@ -1,4 +1,4 @@
-# Developing a Neural Network Regression Model
+## Developing a Neural Network Regression Model
 
 ## AIM
 To develop a neural network regression model for the given dataset.
@@ -40,19 +40,90 @@ Use the trained model to predict  for a new input value .
 
 ## PROGRAM
 
-### Name:
+### Name:SIVAKUMAR R
 
-### Register Number:
+### Register Number:212223230209
 
-```python
+```
+import torch as t
+import torch.nn as nn
+import matplotlib.pyplot as plt
+
+t.manual_seed(71)
+X = t.linspace(1, 50, 50).reshape(-1, 1)
+e = t.randint(-8, 9, (50, 1),dtype=t.float)
+y = 2 * X + 1 + e
+
+plt.scatter(X.numpy(), y.numpy(),color = 'red')
+plt.xlabel('X')
+plt.ylabel('y')
+plt.title('Generated Data for Linear REgression')
+plt.show()
+
 class Model(nn.Module):
-    def __init__(self, in_features, out_features):
-        super().__init__()
-        #Include your code here
+  def __init__(self,in_features,out_features):
+    super().__init__()
+    self.linear = nn.Linear(in_features, out_features)
+
+  def forward(self,x):
+    return self.linear(x)
+
+t.manual_seed(59)
+model = Model(1,1)
+
+initial_weight = model.linear.weight.item()
+initial_bias = model.linear.bias.item()
+
+print(f"Initial Weight: {initial_weight:.2f}")
+print(f"Initial Bias: {initial_bias:.2f}")
+print(f'Initial Weight: {initial_weight:.8f}, Initial Bias: {initial_bias:.8f}\n')
+
+loss_function=nn.MSELoss()
+optimizer=t.optim.SGD(model.parameters(),lr=0.001)
+
+epochs=100
+losses=[]
+
+for epoch in range(1, epochs + 1):
+    optimizer.zero_grad()
+    y_pred = model(X)
+    loss = loss_function(y_pred, y)
+    losses.append(loss.item())
+
+    loss.backward()
+    optimizer.step()
+print(f'epoch: {epoch:2}  loss: {loss.item():10.8f} '
+      f'weight: {model.linear.weight.item():10.8f} '
+      f'bias: {model.linear.bias.item():10.8f}')
+plt.plot(range(epochs),losses,color='blue')
+
+plt.ylabel('Loss')
+plt.xlabel('Epochs')
+plt.title('Loss Curve')
+plt.show()
+
+final_weight = model.linear.weight.item()
+final_bias = model.linear.bias.item()
+print("SIVAKUMAR R")
+print("212223230209")
+print(f'Final Weight: {final_weight:.8f}, Final Bias: {final_bias:.8f}\n')
+
+x1 = t.tensor([X.min().item(),X.max().item()])
+y1 = x1*final_weight + final_bias
+
+plt.scatter(X.numpy(), y.numpy(),label = 'Original Data')
+plt.plot(x1.numpy(), y1.numpy(), 'r', label = 'Best Fit Line')
+plt.xlabel('X')
+plt.ylabel('y')
+plt.title('Trained Model: Best Fit Line')
+plt.legend()
+plt.show()
+
+x_new = t.tensor([[120.0]])
+y_new_pred = model(x_new).item()
+print(f"\nPrediction for x = 120:  {y_new_pred:.8f}")
 
 
-
-# Initialize the Model, Loss Function, and Optimizer
 
 ```
 
@@ -60,9 +131,22 @@ class Model(nn.Module):
 Include screenshot of the generated data
 
 ### OUTPUT
-Training Loss Vs Iteration Plot
-Best Fit line plot
-Include your plot here
+<img width="553" height="348" alt="image" src="https://github.com/user-attachments/assets/161d0b25-4ab8-4120-b4be-6881eb3cac39" />
+
+<img width="816" height="60" alt="image" src="https://github.com/user-attachments/assets/9ff38164-4ea8-4ddd-951d-54e3f98414e1" />
+<img width="865" height="52" alt="image" src="https://github.com/user-attachments/assets/b8219475-6ee4-4aca-9516-cb7e8afd4324" />
+<img width="763" height="56" alt="image" src="https://github.com/user-attachments/assets/783b4409-3ecd-42bb-9212-f9fb897c9054" />
+<img width="681" height="456" alt="image" src="https://github.com/user-attachments/assets/e373e28a-7d47-4e3d-ba9d-a6404958e077" />
+<img width="525" height="104" alt="image" src="https://github.com/user-attachments/assets/dcc64e95-380b-41b1-9057-68df2a68ae64" />
+<img width="868" height="552" alt="image" src="https://github.com/user-attachments/assets/3ed1b532-58e8-49db-93fb-2955e5f8b282" />
+<img width="589" height="63" alt="image" src="https://github.com/user-attachments/assets/dc65928c-ffdf-4d10-afe0-62551f5cbd05" />
+
+
+
+
+
+
+
 
 ### New Sample Data Prediction
 Include your sample input and output here
